@@ -12,13 +12,14 @@ Run the following commands:
     - Run server:
         python3 manage.py runserver
 
-        OR
     ============================================= sh FILE TO RUN PROJECT =============================================
+    
     use the start.sh file in the root folder
     - sh start.sh
 
 2. Backend Structure :
     Database:
+   
         1. User Model: Stores data related to a user
             - username
             - password
@@ -38,7 +39,8 @@ Run the following commands:
             - split_type : It is a choice field which have the following values : Equal, Percent, Exact
             - date: Auto added field when a new expense is created
 
-3. API Endpoint : 
+4. API Endpoint :
+   
         1. /api/user [GET/POST Request] : This is the endpoint for seeing and creating new users
             Request Body : {
                 'username' : '',
@@ -74,8 +76,10 @@ Run the following commands:
         5. /api/expense/ [GET Request] : List all the expense in the Expense model
         6. /api/expense/user_id/ [GET Request] : List all the expenses done by a user.
 
-4. Working : 
-    When an Expense is added following things happens : 
+6. Working :
+   
+    When an Expense is added following things happens :
+   
         1. A new entry in the expense model is created.
         2. Based on the choice selected, particular passbook entries are made
         3. Mails have been sent to the users who have been the part of the  expense
@@ -84,7 +88,8 @@ Run the following commands:
 
     - A weekly task is being scheduled using celery, which sends email to all the users in the system
 
-5. Important Point :
+8. Important Point :
+
     - Python >= 3.9.6, must be installed in the system to run the this project
     - Make sure to have redis installed in the system:
         - mac installation : 
