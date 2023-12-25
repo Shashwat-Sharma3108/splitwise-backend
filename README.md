@@ -58,7 +58,7 @@ Run the following commands:
                         'split_type':'',
                         'total_amount_spend' : '',
                     }
-                    'user_ids' : {},
+                    'user_ids' : [],
                     'percentage_user_split' : [
                         'user_id':'',
                         'percentage': ''
