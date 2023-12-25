@@ -1,6 +1,7 @@
 1. How to start the project:
 
 Run the following commands:
+
     ============================================= COMMANDS TO RUN PROJECT =============================================
     - redis-server
     - python3 -m venv <ENV_NAME>
