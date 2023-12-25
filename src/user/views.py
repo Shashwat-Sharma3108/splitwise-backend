@@ -1,6 +1,4 @@
-from django.contrib.auth.models import (
-    User
-    )
+from .models import CustomUser
 from rest_framework import generics
 from .serializers import (
     UserSerializer
@@ -14,5 +12,5 @@ class UserCreateView(generics.ListCreateAPIView):
         Using the built in ListCreateAPIView which provides
         functionality for GET and POST Request
     """
-    queryset = User.objects.all()
+    queryset = CustomUser.objects.all()
     serializer_class = UserSerializer

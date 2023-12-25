@@ -129,6 +129,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {}
 
+AUTH_USER_MODEL = 'expense_tracker.CustomUser'
+
 #CELERY CONFIGURATION
 CELERY_BROKER_URL = os.getenv('REDIS_BROKER_URL') 
 CELERY_RESULT_BACKEND = os.getenv('REDIS_RESULT_URL')

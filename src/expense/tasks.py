@@ -1,6 +1,6 @@
 from celery import shared_task
 from django.core.mail import send_mail
-from django.contrib.auth.models import User
+from ..user.models import CustomUser as User
 from .models import Expense
 from datetime import datetime, timedelta
 

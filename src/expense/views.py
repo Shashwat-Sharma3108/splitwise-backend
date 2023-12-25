@@ -3,7 +3,7 @@ from rest_framework import generics, views, status
 from rest_framework.response import Response
 from .models import Expense, Passbook
 from .serializers import ExpenseSerializer, ExactDataSplitSerializer, PercentageDictSerializer, PassbookSerializer
-from django.contrib.auth.models import User
+from ..user.models import CustomUser as User
 from .utility import get_simplified_data
 from .tasks import send_expense_notification
 
