@@ -39,12 +39,14 @@ class ExpenseCreateView(views.APIView):
             return Response({"Error":"Expense cannot be more than 1cr"},status=status.HTTP_400_BAD_REQUEST)
         
         if split_type == 'Equal':
+            #Added to the expense model
+            instance = serializer.save()
             splitted_amount = round(expense_amount/group_users.count(), 2)
             for user in group_users:
                 passbook_entry = Passbook(
                     user=user,
-                    splitted_amount = splitted_amount,
-                    payer_id = self.request.user
+                    amount = splitted_amount,
+                    expense = instance
                 )
                 passbook_entry.save()
                 send_expense_notification.delay(passbook_entry) #adding to celery Queue
@@ -62,19 +64,21 @@ class ExpenseCreateView(views.APIView):
             }
                 return Response(errors, status=status.HTTP_400_BAD_REQUEST)
             else:
+
                 #percentage_dict : [{'user_id':id,'percentage':10},.....]
                 calculate_percentage = [p_dict_data.get('percentage',0) for p_dict_data in percentage_dict_serializer.data]
 
                 if sum(calculate_percentage) > 100:
                     return Response({"error":"Invalid Percentage Provided, Must not be greater than 100"},status=status.HTTP_400_BAD_REQUEST)
-                elif sum(calculate_percentage) < 0:
-                    return Response({"error":"Invalid Percentage Provided, Must not be greater than 0"},status=status.HTTP_400_BAD_REQUEST)
-                
+                elif sum(calculate_percentage) < 100:
+                    return Response({"error":"Invalid Percentage Provided, Must be equal to 100"},status=status.HTTP_400_BAD_REQUEST)
+                #Added to the expense model
+                instance = serializer.save()
                 for data in percentage_dict_serializer.data:
                     passbook_entry = Passbook(
                         user = User.objects.get(pk=data.get('user_id')),
-                        expense_amount = expense_amount * float(data.get('percentage')),
-                        payer_id = self.request.user
+                        amount = expense_amount * float(data.get('percentage')),
+                        expense = instance
                     )
                     passbook_entry.save()
                     send_expense_notification.delay(passbook_entry)
@@ -85,11 +89,13 @@ class ExpenseCreateView(views.APIView):
             exact_data_split_serializer = ExactDataSplitSerializer(data=self.request.data.get('excat_data_split'), many=True)
 
             if exact_data_split_serializer.is_valid(raise_exception=True):
+                #Added to the expense model
+                instance = serializer.save()
                 for data in exact_data_split_serializer.data:
                     passbook_entry = Passbook(
                         user = User.objects.get(pk=data.get('user_id')),
                         expense_amount = data.get('amount'),
-                        payer_id = self.request.user
+                        expense = instance
                     )
                     passbook_entry.save()
                     send_expense_notification.delay(passbook_entry)
@@ -102,8 +108,6 @@ class ExpenseCreateView(views.APIView):
         else:
             return Response({'error': 'Invalid split_type'}, status=status.HTTP_400_BAD_REQUEST)
         
-        #Added to the expense model
-        serializer.save()
         return Response({"message":"Expense Recorded"},status=status.HTTP_201_CREATED)
 
 class PassbookListView(views.APIView):
