@@ -24,7 +24,8 @@ class ExpenseCreateView(views.APIView):
             }
         """
         request_data = request.data.get('expense')
-        serializer = ExpenseSerializer(request_data)
+        request_data['payer'] = request.user
+        serializer = ExpenseSerializer(data=request_data)
 
         expense_data = serializer.validated_data
         split_type = expense_data.get('split_type',None)
