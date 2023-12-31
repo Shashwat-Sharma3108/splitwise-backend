@@ -44,7 +44,7 @@ def send_expense_notification(passboook_data):
         the passbook table
     """
     # Compose and send emails
-    subject = f"New Expense Added by : {passboook_data.payer_id.username}"
+    subject = f"New Expense Added by : {passboook_data.user.username}"
     message = f"A New Expense of amount :{passboook_data.amount} is added to your account"
     from_email = "sshashwat004@gmail.com"
     recipient_list = [passboook_data.user.email]
