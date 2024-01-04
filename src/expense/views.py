@@ -45,7 +45,7 @@ class ExpenseCreateView(views.APIView):
             splitted_amount = round(expense_amount/group_users.count(), 2)
             for user in group_users:
                 passbook_entry = Passbook(
-                    user=user,
+                    user=User.objects.get(id=user),
                     amount = splitted_amount,
                     expense = instance
                 )
