@@ -26,7 +26,7 @@ def get_simplified_data(user_id:int) -> dict:
     # calculating where the user have payed for the expense
     amount_to_take = Expense.objects.filter(user=user_id)
     for entry in amount_to_take:
-        passbook_entries = Passbook.objects.filter(id=entry.id)       
+        passbook_entries = Passbook.objects.filter(expense=entry.id)       
         for p_entry in passbook_entries:
             if p_entry.user.id != user_id:
                 user_to_take[p_entry.user.username] += p_entry.amount 
@@ -36,7 +36,8 @@ def get_simplified_data(user_id:int) -> dict:
     for entry in amount_to_give:
         passbook_entries_of_expense = Passbook.objects.filter(expense=entry.id)
         for p_entry in passbook_entries_of_expense:
-            user_to_give[p_entry.user.username] += entry.amount if p_entry.user.id == user_id else 0
+            if p_entry.user.id == user_id:
+                user_to_give[p_entry.expense.payer.username] += entry.amount if p_entry.user.id == user_id else 0
 
     # Combine the data into the desired format
     simplified_data = {'money_to_take': [], 'money_to_give': []}

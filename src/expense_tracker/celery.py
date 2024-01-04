@@ -14,7 +14,7 @@ app.autodiscover_tasks()
 # Configure Celery Beat schedule
 app.conf.beat_schedule = {
     'send-weekly-expenditure-summary': {
-        'task': 'expenses.tasks.send_weekly_expenditure_summary',
+        'task': 'expense.tasks.send_weekly_expenditure_summary',
         'schedule': crontab(day_of_week='sunday', hour=0, minute=0),  # Run every Sunday at midnight
     },
 }
